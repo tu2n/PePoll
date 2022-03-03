@@ -276,12 +276,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                             const Expanded(child: SizedBox()),
 
                                             // more icon
-                                            InkWell(
-                                              onTap: () {},
-                                              child: const Icon(
-                                                Icons.more_vert,
-                                                color: kWhite,
-                                                size: 25,
+                                            Visibility(
+                                              visible: false,
+                                              child: InkWell(
+                                                onTap: () {},
+                                                child: const Icon(
+                                                  Icons.more_vert,
+                                                  color: kWhite,
+                                                  size: 25,
+                                                ),
                                               ),
                                             ),
                                           ],
