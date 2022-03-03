@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "834840475403",
+    "project_id": "pepoll",
+    "storage_bucket": "pepoll.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:834840475403:android:8fab11a7997570b3fcd40e",
+        "android_client_info": {
+          "package_name": "com.pepoll.pepoll"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "834840475403-6vshindq6f7q66vmp16so0r6q7lajrbv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pepoll.pepoll",
+            "certificate_hash": "eb188f4531c34a7aa2a69ef179647e883f226cda"
+          }
+        },
+        {
+          "client_id": "834840475403-7fu8dj4cu4l130ohs52jf1i36s5fsjib.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC8qzgLUBXcrJPXR1qVv45-vmnDV57CkJk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "834840475403-7fu8dj4cu4l130ohs52jf1i36s5fsjib.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
