@@ -1,11 +1,13 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:pepoll/redux/app_state.dart';
 import 'package:redux/redux.dart';
+import 'package:flutter_svg/svg.dart';
 
 import '../../core/colors.dart';
 import '../../core/pop_exit.dart';
@@ -119,7 +121,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         Text(
                           "Hello, $firstName",
                           style: const TextStyle(
-                              fontSize: 22,
+                              fontSize: 20,
                               color: kLightMagenta,
                               fontWeight: FontWeight.bold
                           ),
@@ -128,7 +130,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         Text(
                           email,
                           style: const TextStyle(
-                              fontSize: 15,
+                              fontSize: 14,
                               color: kWhite,
                               fontWeight: FontWeight.bold,
                               letterSpacing: 1.5
@@ -151,7 +153,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       style: ElevatedButton.styleFrom(
                           primary: kWhite,
                           onPrimary: Colors.black,
-                          minimumSize: const Size(35, 40)
+                          minimumSize: const Size(28, 35)
                       ),
                       child: const Text(
                         'Logout',
@@ -197,7 +199,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       else if(snapshot.hasError) {
                         return const Center(child: Text('Something went wrong!'));
                       }else {
-                        return snapshot.hasData ? ListView.separated(
+                        return polls.isNotEmpty ? ListView.separated(
                           shrinkWrap: true,
                           itemCount: polls.length,
                           itemBuilder: (context, index) {
@@ -277,11 +279,44 @@ class _HomeScreenState extends State<HomeScreen> {
 
                                             // more icon
                                             Visibility(
-                                              visible: false,
+                                              visible: store.state.localState.user.uid == polls[index].createdBy,
                                               child: InkWell(
-                                                onTap: () {},
+                                                onTap: () {
+                                                  showCupertinoDialog(
+                                                      barrierDismissible: true,
+                                                      context: context,
+                                                      builder: (_) {
+                                                        return CupertinoAlertDialog(
+                                                          title: const Text("Delete Poll"),
+                                                          content: const Text("Are you sure you want to delete this poll?"),
+                                                            actions: [
+                                                              CupertinoDialogAction(
+                                                                child: const Text("No"),
+                                                                textStyle: const TextStyle(
+                                                                    color: kLightMagenta
+                                                                ),
+                                                                onPressed: () => Navigator.pop(_),
+                                                              ),
+
+                                                              CupertinoDialogAction(
+                                                                child: const Text("Yes"),
+                                                                textStyle: const TextStyle(
+                                                                  color: kMatteOrange
+                                                                ),
+                                                                onPressed: () async {
+                                                                  await deletePoll(polls[index].uid);
+                                                                  Navigator.pop(_);
+                                                                },
+                                                              ),
+                                                            ],
+
+                                                        );
+                                                      }
+
+                                                  );
+                                                },
                                                 child: const Icon(
-                                                  Icons.more_vert,
+                                                  Icons.delete,
                                                   color: kWhite,
                                                   size: 25,
                                                 ),
@@ -371,9 +406,16 @@ class _HomeScreenState extends State<HomeScreen> {
                           separatorBuilder: (BuildContext context, int index) {
                             return const SizedBox(height: 5);
                           },
-                        ) : const Text(
-                          'Hello',
-                          style: TextStyle(fontSize: 50),
+                        ) : Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SvgPicture.asset(
+                              'assets/svg/empty.svg',
+                              height: 200,
+                            ),
+                            const SizedBox(height: 10,),
+                            const Text('No poll available', style: TextStyle(color: Colors.grey),),
+                          ],
                         );
                       }
                     }

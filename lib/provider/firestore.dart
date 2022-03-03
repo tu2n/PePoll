@@ -163,3 +163,13 @@ Future<void> removeVote(String pollDocId, String pollChoiceDocId, String userId)
 
   }).catchError((e) => debugPrint("[addVote] error adding vote: $e"));
 }
+
+// <<<<<<<<<<<<<<<<<<<<<<<<<<<< Delete >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+Future<void> deletePoll(String pollDocId) async {
+  DocumentReference poll =
+  FirebaseFirestore.instance.collection('channels').doc(FIRST_CHANNEL_UID).collection('polls').doc(pollDocId);
+
+  await poll.delete().then((value) {
+    debugPrint("Poll[$pollDocId] deleted!");
+  }).catchError((e) => debugPrint("Error: $e"));
+}
