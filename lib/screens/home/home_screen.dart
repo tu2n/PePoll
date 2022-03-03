@@ -99,8 +99,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
     final String email = user.email;
 
-    List<Widget> choicesWidgets = [];
-
     return Scaffold(
       backgroundColor: kMatteViolet,
       body: WillPopScope(
@@ -309,7 +307,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                     const SizedBox(height: 15),
 
                                     // choices
-
                                     StreamBuilder<QuerySnapshot>(
                                       stream: _firestore.collection('channels').doc(FIRST_CHANNEL_UID)
                                           .collection('polls').doc(polls[index].uid).collection('choices').snapshots(),
@@ -318,7 +315,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                         List<Widget> choicesWidgets = [];
 
                                         PollChoice pollChoice;
-                                        List<PollChoice> pollChoices = [];
 
                                         String pollDocID = polls[index].uid;
 
@@ -343,6 +339,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 pollDocID,
                                                 pollChoice,
                                                 store.state.localState.user.uid,
+
                                               )
                                             );
 
