@@ -313,8 +313,13 @@ class _CreatePollScreenState extends State<CreatePollScreen> {
                                   PollChoice pollChoice;
                                   List<PollChoice> pollChoices = [];
 
-                                  if(expirationCtrl.text == DateFormat('yMMMMd').format(DateTime.now())) {
-                                    expirationCtrl = TextEditingController(text: DateFormat('yyyy-MM-dd').format(DateTime.now()));
+                                  if(expirationCtrl.text == DateFormat('yMMMMd').format(DateTime.now().add(const Duration(days: 1)))) {
+                                    expirationCtrl =
+                                        TextEditingController(
+                                            text: DateFormat('yyyy-MM-dd')
+                                            .format(DateTime.now().add(const Duration(days: 1))
+                                            )
+                                        );
                                   }
 
                                   for(var choiceCtrl in choiceCtrls) {
