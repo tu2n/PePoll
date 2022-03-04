@@ -13,7 +13,7 @@ import '../../model/poll.dart';
 import '../../provider/firestore.dart';
 import 'components/text_field_component.dart';
 
-
+enum Day {Yesterday, Today, Tomorrow}
 
 class CreatePollScreen extends StatefulWidget {
 
@@ -26,10 +26,11 @@ class CreatePollScreen extends StatefulWidget {
 
 class _CreatePollScreenState extends State<CreatePollScreen> {
 
-  final _formKey = GlobalKey<FormState>();
+  final _createPollKey = GlobalKey<FormState>();
 
   TextEditingController queCtrl = TextEditingController();
-  TextEditingController expirationCtrl = TextEditingController(text: DateFormat('yMMMMd').format(DateTime.now()));
+  TextEditingController expirationCtrl =
+    TextEditingController(text: DateFormat('yMMMMd').format(DateTime.now().add(const Duration(days: 1))));
 
   bool showAddChoicesButton= true;
 
@@ -41,7 +42,19 @@ class _CreatePollScreenState extends State<CreatePollScreen> {
 
   Poll poll;
 
+  Day isToday(DateTime date) {
+    Day day;
 
+    final diff = date.difference(DateTime.now()).inDays;
+
+    if(diff == 0) day = Day.Today;
+
+    if(diff > 0) day = Day.Tomorrow;
+
+    if(diff < 0) day = Day.Yesterday;
+
+    return day;
+  }
 
   Widget buildQuestionTextField() {
     return TextFieldComponent(
@@ -79,14 +92,14 @@ class _CreatePollScreenState extends State<CreatePollScreen> {
   }
 
 
-
   Future<DateTime> pickDate(BuildContext context) async {
 
     final date = await showDatePicker(
         context: context,
-        initialDate: DateTime.now(),
-        firstDate: DateTime(2022),
-        lastDate: DateTime(2222)
+        initialDate: DateTime.now().add(const Duration(days: 1)),
+        firstDate: DateTime.now().add(const Duration(days: 1)),
+        lastDate: DateTime(2222),
+      initialEntryMode: DatePickerEntryMode.calendarOnly,
     );
 
     if(date == null) return null;
@@ -129,7 +142,7 @@ class _CreatePollScreenState extends State<CreatePollScreen> {
             child: Padding(
               padding: const EdgeInsets.all(20),
               child: Form(
-                key: _formKey,
+                key: _createPollKey,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -296,45 +309,50 @@ class _CreatePollScreenState extends State<CreatePollScreen> {
                           Expanded(
                             child:  ElevatedButton(
                               onPressed: () async {
-                                PollChoice pollChoice;
-                                List<PollChoice> pollChoices = [];
+                                if(_createPollKey.currentState.validate()) {
+                                  PollChoice pollChoice;
+                                  List<PollChoice> pollChoices = [];
 
-                                for(var choiceCtrl in choiceCtrls) {
+                                  if(expirationCtrl.text == DateFormat('yMMMMd').format(DateTime.now())) {
+                                    expirationCtrl = TextEditingController(text: DateFormat('yyyy-MM-dd').format(DateTime.now()));
+                                  }
 
-                                   pollChoice = PollChoice(
+                                  for(var choiceCtrl in choiceCtrls) {
+
+                                    pollChoice = PollChoice(
                                       choice: choiceCtrl.text,
-                                   );
+                                    );
 
-                                   pollChoices.add(pollChoice);
-                                }
+                                    pollChoices.add(pollChoice);
+                                  }
 
-                                poll = Poll(
-                                    question: queCtrl.text,
-                                    expiration: expirationCtrl.text,
-                                    createdBy: store.state.localState.user.uid
-                                );
+                                  poll = Poll(
+                                      question: queCtrl.text,
+                                      expiration: expirationCtrl.text,
+                                      createdBy: store.state.localState.user.uid
+                                  );
 
-                                await createPoll(poll, pollChoices).then((value) {
-                                  final successSnackBar = buildSnackBar('Success', kLightMagenta);
-                                  ScaffoldMessenger.of(context).showSnackBar(successSnackBar);
+                                  await createPoll(poll, pollChoices).then((value) {
+                                    final successSnackBar = buildSnackBar('Success', kLightMagenta);
+                                    ScaffoldMessenger.of(context).showSnackBar(successSnackBar);
 
 
-                                  Future.delayed(const Duration(milliseconds: 250), () async {
-                                    queCtrl = TextEditingController();
-                                    expirationCtrl= TextEditingController();
+                                    Future.delayed(const Duration(milliseconds: 250), () async {
+                                      queCtrl = TextEditingController();
+                                      expirationCtrl= TextEditingController();
 
-                                    for(var choiceCtrl in choiceCtrls) {
-                                      choiceCtrl = TextEditingController();
-                                    }
-                                   store.dispatch(Navigation.pushHomeScreen);
+                                      for(var choiceCtrl in choiceCtrls) {
+                                        choiceCtrl = TextEditingController();
+                                      }
+                                      store.dispatch(Navigation.pushHomeScreen);
 
+                                    });
+
+                                  }).catchError((e) {
+                                    final errorSnackBar = buildSnackBar('Error', kMatteOrange);
+                                    ScaffoldMessenger.of(context).showSnackBar(errorSnackBar);
                                   });
-
-                                }).catchError((e) {
-                                  final errorSnackBar = buildSnackBar('Error', kMatteOrange);
-                                  ScaffoldMessenger.of(context).showSnackBar(errorSnackBar);
-                                });
-
+                                }
                               },
                               style: ElevatedButton.styleFrom(
                                   primary: kPaleYellow,

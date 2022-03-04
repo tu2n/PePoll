@@ -169,7 +169,16 @@ Future<void> deletePoll(String pollDocId) async {
   DocumentReference poll =
   FirebaseFirestore.instance.collection('channels').doc(FIRST_CHANNEL_UID).collection('polls').doc(pollDocId);
 
-  await poll.delete().then((value) {
+  await poll.delete().then((value) async {
     debugPrint("Poll[$pollDocId] deleted!");
+
+    await poll.collection('choices').get().then((value) {
+      var choices = value.docs;
+
+      for(var choice in choices) {
+        poll.collection('choices').doc(choice.reference.id).delete();
+      }
+
+    }).catchError((e) => debugPrint("[deletePoll] Error: $e"));
   }).catchError((e) => debugPrint("Error: $e"));
 }
