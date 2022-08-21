@@ -2,7 +2,6 @@ import 'package:redux/redux.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../app_state.dart';
-import 'local_action.dart';
 
 class LocalMiddleware extends MiddlewareClass<AppState> {
   static final unSubscriber = PublishSubject<void>();

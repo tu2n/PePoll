@@ -7,12 +7,12 @@ import 'package:pepoll/provider/firestore.dart';
 import 'package:redux/redux.dart';
 import 'package:pepoll/redux/app_state.dart';
 
-class FirstSubStreamWidget extends StatelessWidget {
+class PollHeaderWidget extends StatelessWidget {
   final FirebaseFirestore firestore;
   final List<Poll> polls;
   final int index;
   final Store<AppState> store;
-  const FirstSubStreamWidget({Key key,
+  const PollHeaderWidget({Key key,
     @required this.firestore,
     @required this.polls,
     @required this.index,

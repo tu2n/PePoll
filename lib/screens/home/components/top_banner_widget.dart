@@ -13,32 +13,15 @@ class TopBannerWidget extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 15),
       child: Row(
         children: [
-          // name and email arrange vertically
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "Hello, $firstName",
-                style: const TextStyle(
-                    fontSize: 20,
-                    color: kLightMagenta,
-                    fontWeight: FontWeight.bold
-                ),
-              ),
-              const SizedBox(height: 5),
-              Text(
-                email,
-                style: const TextStyle(
-                    fontSize: 14,
-                    color: kWhite,
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: 1.5
-                ),
-              ),
-            ],
+          Text(
+            "Hello, $firstName",
+            style: const TextStyle(
+                fontSize: 20,
+                color: kLightMagenta,
+                fontWeight: FontWeight.bold
+            ),
           ),
           const Expanded(child: SizedBox()),
-          // logout button
           ElevatedButton(
             onPressed: () async {
               try{

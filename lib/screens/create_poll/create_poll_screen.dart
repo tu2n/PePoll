@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:pepoll/screens/home/components/tab_bar_widget.dart';
 import 'package:redux/redux.dart';
 
 import '../../core/colors.dart';
@@ -16,43 +17,28 @@ import 'components/text_field_component.dart';
 enum Day {Yesterday, Today, Tomorrow}
 
 class CreatePollScreen extends StatefulWidget {
-
   const CreatePollScreen({Key key}) : super(key: key);
-
-
   @override
   _CreatePollScreenState createState() => _CreatePollScreenState();
 }
 
 class _CreatePollScreenState extends State<CreatePollScreen> {
-
   final _createPollKey = GlobalKey<FormState>();
-
   TextEditingController queCtrl = TextEditingController();
   TextEditingController expirationCtrl =
     TextEditingController(text: DateFormat('yMMMMd').format(DateTime.now().add(const Duration(days: 1))));
-
   bool showAddChoicesButton= true;
-
   bool showRemoveChoicesButton = false;
-
   List<Widget> choices = [];
-
   List<TextEditingController> choiceCtrls = [];
-
   Poll poll;
 
   Day isToday(DateTime date) {
     Day day;
-
     final diff = date.difference(DateTime.now()).inDays;
-
     if(diff == 0) day = Day.Today;
-
     if(diff > 0) day = Day.Tomorrow;
-
     if(diff < 0) day = Day.Yesterday;
-
     return day;
   }
 
@@ -91,9 +77,7 @@ class _CreatePollScreenState extends State<CreatePollScreen> {
     return SnackBar(content: Text(text), backgroundColor: color, duration: const Duration(seconds: 2),);
   }
 
-
   Future<DateTime> pickDate(BuildContext context) async {
-
     final date = await showDatePicker(
         context: context,
         initialDate: DateTime.now().add(const Duration(days: 1)),
@@ -101,18 +85,12 @@ class _CreatePollScreenState extends State<CreatePollScreen> {
         lastDate: DateTime(2222),
       initialEntryMode: DatePickerEntryMode.calendarOnly,
     );
-
     if(date == null) return null;
-
     String dateString = DateFormat('yyyy-MM-dd').format(date);
     debugPrint('Picked date: $dateString');
-
     setState(() => expirationCtrl = TextEditingController(text: dateString));
-
     return date;
   }
-
-
 
   @override
   void initState() {
@@ -120,16 +98,12 @@ class _CreatePollScreenState extends State<CreatePollScreen> {
     choiceCtrls.add(TextEditingController());
     choices.add(buildChoiceTextField('Choice 1', choiceCtrls[0]));
     choices.add(buildChoiceTextField('Choice 2', choiceCtrls[1]));
-
     super.initState();
   }
 
-
   @override
   Widget build(BuildContext context) {
-
     Store<AppState> store = StoreProvider.of<AppState>(context);
-
     return Scaffold(
       resizeToAvoidBottomInset: true,
       backgroundColor: kMatteViolet,
@@ -146,7 +120,6 @@ class _CreatePollScreenState extends State<CreatePollScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-
                     // name and email arrange vertically
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -169,15 +142,12 @@ class _CreatePollScreenState extends State<CreatePollScreen> {
                         ),
                       ],
                     ),
-
                     const Padding(
                       padding: EdgeInsets.only(top: 8.0),
                       child: Divider(thickness: 2,),
                     ),
-
                     // question text field
                     buildQuestionTextField(),
-
                     // choices
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 15.0),
@@ -185,9 +155,7 @@ class _CreatePollScreenState extends State<CreatePollScreen> {
                         children: choices
                       ),
                     ),
-
                     const SizedBox(height: 10),
-
                     // add choices button
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 15.0),
@@ -213,9 +181,7 @@ class _CreatePollScreenState extends State<CreatePollScreen> {
 
                                   ScaffoldMessenger.of(context).showSnackBar(snackBar);
                                 }
-
                               }
-
                             },
                             child: Container(
                               padding: const EdgeInsets.all(1),
@@ -229,7 +195,6 @@ class _CreatePollScreenState extends State<CreatePollScreen> {
                         ),
                       ),
                     ),
-
                     // remove choice button
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 15.0),
@@ -255,9 +220,7 @@ class _CreatePollScreenState extends State<CreatePollScreen> {
 
                                   ScaffoldMessenger.of(context).showSnackBar(snackBar);
                                 }
-
                               }
-
                             },
                             child: Container(
                               padding: const EdgeInsets.all(1),
@@ -271,25 +234,20 @@ class _CreatePollScreenState extends State<CreatePollScreen> {
                         ),
                       ),
                     ),
-
                     // date picker for expiration date
                     buildExpirationTextField(() async => await pickDate(context), true),
-
                     const SizedBox(height: 50),
-
                     // cancel and submit button
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 30.0),
                       child: Row(
                         children: [
-
                           // cancel button
                           Expanded(
                             child:  ElevatedButton(
                               onPressed: () async {
                                 queCtrl = TextEditingController();
                                 expirationCtrl= TextEditingController();
-
                                 for(var choiceCtrl in choiceCtrls) {
                                   choiceCtrl = TextEditingController();
                                 }
@@ -303,16 +261,13 @@ class _CreatePollScreenState extends State<CreatePollScreen> {
                               child: const Text('Cancel', style: TextStyle(fontSize: 18),),
                             ),
                           ),
-
                           const SizedBox(width: 50,),
-
                           Expanded(
                             child:  ElevatedButton(
                               onPressed: () async {
                                 if(_createPollKey.currentState.validate()) {
                                   PollChoice pollChoice;
                                   List<PollChoice> pollChoices = [];
-
                                   if(expirationCtrl.text == DateFormat('yMMMMd').format(DateTime.now().add(const Duration(days: 1)))) {
                                     expirationCtrl =
                                         TextEditingController(
@@ -321,38 +276,29 @@ class _CreatePollScreenState extends State<CreatePollScreen> {
                                             )
                                         );
                                   }
-
                                   for(var choiceCtrl in choiceCtrls) {
 
                                     pollChoice = PollChoice(
                                       choice: choiceCtrl.text,
                                     );
-
                                     pollChoices.add(pollChoice);
                                   }
-
                                   poll = Poll(
                                       question: queCtrl.text,
                                       expiration: expirationCtrl.text,
                                       createdBy: store.state.localState.user.uid
                                   );
-
                                   await createPoll(poll, pollChoices).then((value) {
                                     final successSnackBar = buildSnackBar('Success', kLightMagenta);
                                     ScaffoldMessenger.of(context).showSnackBar(successSnackBar);
-
-
                                     Future.delayed(const Duration(milliseconds: 250), () async {
                                       queCtrl = TextEditingController();
                                       expirationCtrl= TextEditingController();
-
                                       for(var choiceCtrl in choiceCtrls) {
                                         choiceCtrl = TextEditingController();
                                       }
                                       store.dispatch(Navigation.pushHomeScreen);
-
                                     });
-
                                   }).catchError((e) {
                                     final errorSnackBar = buildSnackBar('Error', kMatteOrange);
                                     ScaffoldMessenger.of(context).showSnackBar(errorSnackBar);
@@ -364,7 +310,7 @@ class _CreatePollScreenState extends State<CreatePollScreen> {
                                   onPrimary: kLightMagenta,
                                   minimumSize: const Size(double.infinity, 50)
                               ),
-                              child: const Text('Submit', style: TextStyle(fontSize: 18),),
+                              child: const Text('Post', style: TextStyle(fontSize: 18),),
                             ),
                           ),
                         ],
@@ -376,6 +322,12 @@ class _CreatePollScreenState extends State<CreatePollScreen> {
             ),
           ),
         ),
+      ),
+      bottomNavigationBar: StoreConnector<AppState , int>(
+        converter: (store) => store.state.homeState.currentTabIndex,
+        builder: (context, vm) {
+          return TabBarWidget(currentIndex: vm);
+        },
       ),
     );
   }

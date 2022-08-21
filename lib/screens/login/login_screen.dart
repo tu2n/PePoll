@@ -22,14 +22,10 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-
   User user;
-
   @override
   Widget build(BuildContext context) {
-
     Store<AppState> store = StoreProvider.of<AppState>(context);
-
     return Scaffold(
       body: WillPopScope(
         onWillPop: () => showExitPopup(context),
@@ -38,7 +34,6 @@ class _LoginScreenState extends State<LoginScreen> {
           body: StreamBuilder<Object>(
             stream: FirebaseAuth.instance.authStateChanges(),
             builder: (context, snapshot) {
-
               if(snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(child: CircularProgressIndicator(),);
               }
@@ -48,7 +43,6 @@ class _LoginScreenState extends State<LoginScreen> {
               else if(snapshot.hasError) {
                 return const Center(child: Text('Something went wrong!'));
               }
-
               return Padding(
                 padding: const EdgeInsets.all(20),
                 child: Column(
@@ -89,37 +83,25 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                     ),
-
                     const SizedBox(height: 10),
-
                     ElevatedButton.icon(
                       onPressed: () async {
                         try{
                           final userCredentials = await signIn();
-
                           setState(() =>  user = userCredentials.user);
-
-
                           if(user != null) {
-
                             await store.dispatch(SetUser(user: user));
-
                             if(userCredentials.additionalUserInfo.isNewUser) {
                               await addUser(user);
                               await addMember(user);
                             }else {
                               debugPrint("[LoginScreen] User it not new user");
                             }
-
                             store.dispatch(Navigation.pushHomeScreen);
-
                             debugPrint("[LoginScreen] User: ${store.state.localState.user.displayName}");
-
-
                           } else {
                             debugPrint("[Login Screen] User is NULL");
                           }
-
                         } catch (e) {
                           debugPrint(e.toString());
                         }

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:pepoll/core/colors.dart';
 import 'package:pepoll/model/poll_choice.dart';
 import 'package:pepoll/provider/firestore.dart';
 
-Widget buildChoiceItem(String pollDocId, PollChoice pollChoice, String userId) {
+Widget buildChoiceItem(String pollDocId, PollChoice pollChoice, String userId, String expirationDate) {
   return InkWell(
     onTap: () async {
+      if(expirationDate == DateFormat('yyyy-MM-dd').format(DateTime.now())) return;
       await addVote(pollDocId, pollChoice.uid, userId);
       await removeVote(pollDocId, pollChoice.uid, userId,);
     },
@@ -31,7 +33,6 @@ Widget buildChoiceItem(String pollDocId, PollChoice pollChoice, String userId) {
                     color: Colors.white60
                 ),
               ),
-
             ),
           ),
           const Expanded(child: SizedBox()),
@@ -45,7 +46,6 @@ Widget buildChoiceItem(String pollDocId, PollChoice pollChoice, String userId) {
                     color: Colors.white60
                 ),
               ),
-
             ),
           ),
         ],

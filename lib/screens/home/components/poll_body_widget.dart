@@ -9,12 +9,12 @@ import 'package:pepoll/screens/home/components/choice_item_widget.dart';
 import 'package:redux/redux.dart';
 import 'package:pepoll/redux/app_state.dart';
 
-class SecondSubStreamWidget extends StatelessWidget {
+class PollBodyWidget extends StatelessWidget {
   final FirebaseFirestore firestore;
   final List<Poll> polls;
   final int index;
   final Store<AppState> store;
-  const SecondSubStreamWidget({Key key,
+  const PollBodyWidget({Key key,
     @required this.firestore,
     @required this.polls,
     @required this.index,
@@ -29,6 +29,7 @@ class SecondSubStreamWidget extends StatelessWidget {
           List<Widget> choicesWidgets = [];
           PollChoice pollChoice;
           String pollDocID = polls[index].uid;
+          String expirationDate = polls[index].expiration;
           List<String> voted = <String>[];
           if(snapshot.hasData) {
             final dbPollChoices = snapshot.data.docs;
@@ -42,10 +43,11 @@ class SecondSubStreamWidget extends StatelessWidget {
                   voted: voted
               );
               choicesWidgets.add(buildChoiceItem(
-                pollDocID,
-                pollChoice,
-                store.state.localState.user.uid,
-              )
+                  pollDocID,
+                  pollChoice,
+                  store.state.localState.user.uid,
+                  expirationDate
+                )
               );
               voted = [];
             }

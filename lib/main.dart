@@ -77,10 +77,6 @@ class _PePollState extends State<PePoll> {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: "People's Choices Popularity Voting App",
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-          visualDensity: VisualDensity.adaptivePlatformDensity,
-        ),
         navigatorKey: navigatorKey,
         onGenerateRoute: (RouteSettings settings) => _getRoute(settings),
       ),
