@@ -53,10 +53,9 @@ class _CreatePollScreenState extends State<CreatePollScreen> {
 
   Widget buildChoiceTextField(String label, TextEditingController choiceCtrl) {
     return TextFieldComponent(
-      label: '$label' ':' ' ',
-      validator: InputValidator.validateQuestionInput,
+      label: '$label: ',
+      validator: InputValidator.validateChoiceInput,
       txtCtrl: choiceCtrl,
-
     );
   }
 
@@ -165,7 +164,9 @@ class _CreatePollScreenState extends State<CreatePollScreen> {
                           visible: showAddChoicesButton,
                           child: InkWell(
                             onTap: () {
+                              print("choice count: ${choices.length}");
                               if(choices.length <= 9) {
+                                print("choice count: ${choices.length}");
                                 setState(() {
                                   choiceCtrls.add(TextEditingController());
                                   choices.add(buildChoiceTextField('Choice ${choices.length + 1}', choiceCtrls[choiceCtrls.length - 1]));
@@ -277,7 +278,6 @@ class _CreatePollScreenState extends State<CreatePollScreen> {
                                         );
                                   }
                                   for(var choiceCtrl in choiceCtrls) {
-
                                     pollChoice = PollChoice(
                                       choice: choiceCtrl.text,
                                     );

@@ -14,14 +14,12 @@ Future<void> addUser(User user) async {
 
   users.doc(user.uid).set({
     'uid' : user.uid,
-    'displayName' : user.displayName,
+    'displayName' : user.displayName ?? '',
     'email' : user.email,
-    'phoneNumber' : user.phoneNumber,
-    'photoURL' : user.photoURL
+    'phoneNumber' : user.phoneNumber ?? '',
+    'photoURL' : user.photoURL ?? ''
   }).then((value) {
     debugPrint('[addUser] added user: ${user.displayName}');
-
-
   }).catchError((e) => debugPrint("[addUser] error adding user, Error: $e"));
 }
 
@@ -30,10 +28,10 @@ Future<void> addMember(User user) async {
 
   members.doc(user.uid).set({
     'uid' : user.uid,
-    'displayName' : user.displayName,
+    'displayName' : user.displayName ?? '',
     'email' : user.email,
-    'phoneNumber' : user.phoneNumber,
-    'photoURL' : user.photoURL
+    'phoneNumber' : user.phoneNumber ?? '',
+    'photoURL' : user.photoURL ?? ''
   }).then((value) => debugPrint('[addUser] added member: ${user.displayName}'))
       .catchError((e) => debugPrint("[addUser] error adding member $e"));
 }
@@ -52,8 +50,6 @@ Future<void> createPoll(Poll poll, List<PollChoice> pollChoices) async {
     for(var pollChoice in pollChoices) {
       await createChoices(value.id, pollChoice);
     }
-
-
 
   }).catchError((e) => debugPrint("[createPoll] error adding new poll entry"));
 }
@@ -84,10 +80,10 @@ Future<LocalUser> getUserInfo(String userId) async {
       debugPrint("[getUserInfo] Success fetch from user[$userId]");
 
       localUser = LocalUser(
-          displayName: value.data()['displayName'],
+          displayName: value.data()['displayName'] ?? '',
           email: value.data()['email'],
-          phoneNumber: value.data()['phoneNumber'],
-          photoURL: value.data()['photoURL'],
+          phoneNumber: value.data()['phoneNumber'] ?? '',
+          photoURL: value.data()['photoURL'] ?? '',
           uid: value.data()['uid']
       );
 

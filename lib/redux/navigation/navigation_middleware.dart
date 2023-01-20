@@ -18,10 +18,16 @@ class NavigationMiddleware extends MiddlewareClass<AppState> {
 
       switch (action) {
 
-        case Navigation.pushLoginScreen:
+        case Navigation.pushAuthWall:
           unSubscriber.add(null);
-          navigatorKey.currentState.pushNamed("/login");
-          debugPrint('Push Login Screen');
+          navigatorKey.currentState.pushNamed("/");
+          debugPrint('Push Auth Wall');
+          break;
+
+        case Navigation.pushLoginOrRegister:
+          unSubscriber.add(null);
+          navigatorKey.currentState.pushNamed("/login_or_register");
+          debugPrint('Push Auth Wall');
           break;
 
         case Navigation.pushHomeScreen:

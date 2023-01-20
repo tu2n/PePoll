@@ -1,5 +1,6 @@
 enum Navigation {
-  pushLoginScreen,
+  pushAuthWall,
+  pushLoginOrRegister,
   pushHomeScreen,
   pushCreatePollScreen
 }

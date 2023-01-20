@@ -13,6 +13,9 @@ import 'package:pepoll/screens/create_poll/components/text_field_component.dart'
 import 'package:pepoll/screens/create_poll/create_poll_screen.dart';
 import 'package:redux/redux.dart';
 
+
+/// THIS IS  WIDGET IS NO LONGER DISPLAY
+/// BUT STILL USE FOR UI REFERENCE
 class CreatePollTab extends StatefulWidget {
   const CreatePollTab({Key key}) : super(key: key);
 
@@ -52,7 +55,7 @@ class _CreatePollTabState extends State<CreatePollTab> {
   Widget buildChoiceTextField(String label, TextEditingController choiceCtrl) {
     return TextFieldComponent(
       label: '$label' ':' ' ',
-      validator: InputValidator.validateQuestionInput,
+      validator: InputValidator.validateChoiceInput,
       txtCtrl: choiceCtrl,
 
     );
@@ -92,6 +95,15 @@ class _CreatePollTabState extends State<CreatePollTab> {
     debugPrint('Picked date: $dateString');
     setState(() => expirationCtrl = TextEditingController(text: dateString));
     return date;
+  }
+
+  @override
+  void initState() {
+    choiceCtrls.add(TextEditingController());
+    choiceCtrls.add(TextEditingController());
+    choices.add(buildChoiceTextField('Choice 1', choiceCtrls[0]));
+    choices.add(buildChoiceTextField('Choice 2', choiceCtrls[1]));
+    super.initState();
   }
 
   @override

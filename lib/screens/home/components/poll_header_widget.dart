@@ -27,20 +27,25 @@ class PollHeaderWidget extends StatelessWidget {
           String photoURL;
           String displayName;
           String expiration;
+          String email;
           DateTime date =  DateTime.parse(polls[index].expiration);
           expiration = Poll.formatExpDateToString(date);
           if(snapshot.hasData) {
             photoURL = snapshot.data.get('photoURL');
             displayName = snapshot.data.get('displayName');
+            email = snapshot.data.get('email');
           }
           return snapshot.hasData ? Row(
             children: [
               // avatar
               CircleAvatar(
                 radius: 15,
-                backgroundImage: photoURL != null
+                backgroundImage: photoURL != ""
                     ? NetworkImage(photoURL)
-                    : const AssetImage('assets/svg/profile_avatar.svg'),
+                    : null,
+                child: photoURL == ""
+                    ? Text(email[0])
+                    : const Text(''),
               ),
               const SizedBox(width: 5),
               // name and poll expiration
@@ -50,7 +55,7 @@ class PollHeaderWidget extends StatelessWidget {
                   Align(
                       alignment: Alignment.centerRight,
                       child: Text(
-                          displayName,
+                          displayName == "" ? email : displayName,
                           style: const TextStyle(
                               color: kWhite,
                               fontWeight: FontWeight.bold,

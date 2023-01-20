@@ -13,7 +13,12 @@ class ProfileTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String firstName = user.displayName.split((' '))[0];
+    String firstName;
+    if(user.displayName != null) {
+      firstName = user.displayName.split((' '))[0];
+    } else {
+      firstName = '';
+    }
     return Expanded(
       child: Column(
         children: [
@@ -21,12 +26,17 @@ class ProfileTab extends StatelessWidget {
           const SizedBox(height: 20,),
           CircleAvatar(
             backgroundColor: kDarkMatteViolet,
-            radius: 150,
-            child: Image.network(user.photoURL, fit: BoxFit.fill,),
+            radius: firstName == '' ? 100 : 150,
+            child: firstName == ''
+                ? Text(user.email[0], style: TextStyle(fontSize: 100, fontWeight: FontWeight.bold),)
+                : Image.network(user.photoURL, fit: BoxFit.fill,),
           ),
           const SizedBox(height: 50,),
-          ProfileTextWidget(text: user.displayName),
-          const SizedBox(height: 20,),
+          if(firstName != '') ...[
+            ProfileTextWidget(text: user.displayName),
+            const SizedBox(height: 20,),
+
+          ],
           ProfileTextWidget(text: user.email),
         ],
       ),

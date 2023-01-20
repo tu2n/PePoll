@@ -3,7 +3,10 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:pepoll/redux/app_state.dart';
+import 'package:pepoll/redux/navigation/navigation_action.dart';
 import 'package:pepoll/redux/store.dart';
+import 'package:pepoll/screens/login/login_or_register.dart';
+import 'package:pepoll/screens/login/register_screen.dart';
 import 'package:redux/redux.dart';
 
 import 'core/colors.dart';
@@ -84,17 +87,42 @@ class _PePollState extends State<PePoll> {
   }
 }
 
+class Auth extends StatelessWidget {
+  const Auth({Key key}) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    Store<AppState> store = StoreProvider.of<AppState>(context);
+    return MaterialApp(
+      home: Scaffold(
+        body: StreamBuilder<User>(
+          stream: FirebaseAuth.instance.authStateChanges(),
+          builder: (context, snapshot) {
+            if(snapshot.hasData) {
+              // store.dispatch(Navigation.pushHomeScreen);
+              store.dispatch(SetUser(user: FirebaseAuth.instance.currentUser));
+              return const HomeScreen();
+            }else {
+              //store.dispatch(Navigation.pushLoginOrRegister);
+              return const LoginOrRegisterScreen();
+            }
+          },
+        ),
+      ),
+    );
+  }
+}
+
 MaterialPageRoute _getRoute(RouteSettings settings) {
   switch (settings.name) {
     case '/':
       return MaterialPageRoute(
           settings: const RouteSettings(name: "/"),
-          builder: (_) => const LoginScreen());
+          builder: (_) => const Auth());
 
-    case '/login':
+    case '/login_or_register':
       return MaterialPageRoute(
-          settings: const RouteSettings(name: "/login"),
-          builder: (_) => const LoginScreen());
+          settings: const RouteSettings(name: "login_or_register"),
+          builder: (_) => const LoginOrRegisterScreen());
 
     case '/home':
       return MaterialPageRoute(

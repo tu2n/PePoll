@@ -37,7 +37,7 @@ class _HomeScreenState extends State<HomeScreen> {
       UserPollsTab(firestore: _firestore, store: store),
       const CreatePollTab(),
       ProfileTab(user: user,),
-      ProfileTab(user: user,),
+      //ProfileTab(user: user,),
     ];
 
     return Scaffold(

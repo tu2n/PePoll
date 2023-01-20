@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:pepoll/core/colors.dart';
 import 'package:pepoll/provider/auth.dart';
+import 'package:pepoll/redux/app_state.dart';
+import 'package:pepoll/redux/navigation/navigation_action.dart';
+import 'package:redux/redux.dart';
 
 class TopBannerWidget extends StatelessWidget {
   final String firstName;
@@ -9,6 +13,7 @@ class TopBannerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Store<AppState> store = StoreProvider.of<AppState>(context);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 15),
       child: Row(
@@ -25,7 +30,7 @@ class TopBannerWidget extends StatelessWidget {
           ElevatedButton(
             onPressed: () async {
               try{
-                await signOut();
+                await Auth().signOut();
               } catch (e) {
                 debugPrint(e.toString());
               }
