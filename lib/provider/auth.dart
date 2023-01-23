@@ -81,8 +81,17 @@ class Auth {
   }
 
   Future signOut() async{
-    await GoogleSignIn().signOut();
-    FirebaseAuth.instance.signOut();
+    try{
+      await GoogleSignIn().signOut();
+    } catch (e){
+      debugPrint(e);
+    }
+
+    try {
+      FirebaseAuth.instance.signOut();
+    }catch (e) {
+      debugPrint(e);
+    }
   }
 }
 
