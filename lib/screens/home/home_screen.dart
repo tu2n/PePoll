@@ -10,7 +10,6 @@ import 'package:pepoll/screens/home/components/explore_banner.dart';
 import 'package:redux/redux.dart';
 import '../../core/colors.dart';
 import '../../core/pop_exit.dart';
-import '../../redux/navigation/navigation_action.dart';
 import 'components/create_poll_tab.dart';
 import 'components/profile_tab.dart';
 import 'components/tab_bar_widget.dart';
@@ -33,11 +32,10 @@ class _HomeScreenState extends State<HomeScreen> {
     final User user = store.state.localState.user;
 
     final tabContents = [
-      AllPollsTab(firestore: _firestore, store: store),
-      UserPollsTab(firestore: _firestore, store: store),
+      const AllPollsTab(),
+      const UserPollsTab(),
       const CreatePollTab(),
       ProfileTab(user: user,),
-      //ProfileTab(user: user,),
     ];
 
     return Scaffold(
@@ -53,10 +51,12 @@ class _HomeScreenState extends State<HomeScreen> {
             builder: (context, vm) {
               return Column(
                 children: [
+                  const SizedBox(height: 5,),
                   TapBanner(
                     visible: vm['currentTabIndex'] == 0 || vm['currentTabIndex'] == 1,
                     isAllPollsTab: vm['currentTabIndex'] == 0,
                   ),
+                  const SizedBox(height: 10,),
                   tabContents[vm['currentTabIndex']],
                   KeyboardVisibilityBuilder(
                     builder: (context, isKeyboardVisible) {
@@ -70,19 +70,6 @@ class _HomeScreenState extends State<HomeScreen> {
               );
             },
           ),
-        ),
-      ),
-      floatingActionButton: Visibility(
-        visible: false,
-        child: FloatingActionButton(
-          onPressed: () {
-            store.dispatch(Navigation.pushCreatePollScreen);
-          },
-          child: const Icon(
-              Icons.add
-          ),
-          foregroundColor: kWhite,
-          backgroundColor: kLightMagenta,
         ),
       ),
     );

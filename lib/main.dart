@@ -3,19 +3,13 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:pepoll/redux/app_state.dart';
-import 'package:pepoll/redux/navigation/navigation_action.dart';
 import 'package:pepoll/redux/store.dart';
 import 'package:pepoll/screens/login/login_or_register.dart';
-import 'package:pepoll/screens/login/register_screen.dart';
+import 'package:pepoll/screens/poll/poll_detail_screen.dart';
 import 'package:redux/redux.dart';
-
-import 'core/colors.dart';
-import 'core/initialize_firebase.dart';
 import 'redux/local/local_action.dart';
 import 'redux/navigation/navigation_middleware.dart';
-import 'screens/create_poll/create_poll_screen.dart';
 import 'screens/home/home_screen.dart';
-import 'screens/login/login_screen.dart';
 
 
 
@@ -98,11 +92,9 @@ class Auth extends StatelessWidget {
           stream: FirebaseAuth.instance.authStateChanges(),
           builder: (context, snapshot) {
             if(snapshot.hasData) {
-              // store.dispatch(Navigation.pushHomeScreen);
               store.dispatch(SetUser(user: FirebaseAuth.instance.currentUser));
               return const HomeScreen();
             }else {
-              //store.dispatch(Navigation.pushLoginOrRegister);
               return const LoginOrRegisterScreen();
             }
           },
@@ -129,14 +121,14 @@ MaterialPageRoute _getRoute(RouteSettings settings) {
           settings: const RouteSettings(name: "/home"),
           builder: (_) => const HomeScreen());
 
-    case '/create_poll':
+    case '/poll_detail_screen':
       return MaterialPageRoute(
-          settings: const RouteSettings(name: "/create_poll"),
-          builder: (_) => const CreatePollScreen());
+          settings: const RouteSettings(name: "/poll_detail_screen"),
+          builder: (_) => const PollDetailScreen());
 
     default:
       return MaterialPageRoute(
           settings: const RouteSettings(name: "/"),
-          builder: (_) => const LoginScreen());
+          builder: (_) => const LoginOrRegisterScreen());
   }
 }

@@ -8,11 +8,10 @@ import 'package:pepoll/model/poll_choice.dart';
 import 'package:pepoll/provider/firestore.dart';
 import 'package:pepoll/redux/app_state.dart';
 import 'package:pepoll/redux/home/home_action.dart';
-import 'package:pepoll/redux/navigation/navigation_action.dart';
-import 'package:pepoll/screens/create_poll/components/text_field_component.dart';
-import 'package:pepoll/screens/create_poll/create_poll_screen.dart';
+import 'package:pepoll/screens/components/text_field_component.dart';
 import 'package:redux/redux.dart';
 
+enum Day {Yesterday, Today, Tomorrow}
 
 /// THIS IS  WIDGET IS NO LONGER DISPLAY
 /// BUT STILL USE FOR UI REFERENCE

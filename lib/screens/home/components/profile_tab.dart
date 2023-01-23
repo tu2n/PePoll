@@ -28,14 +28,13 @@ class ProfileTab extends StatelessWidget {
             backgroundColor: kDarkMatteViolet,
             radius: firstName == '' ? 100 : 150,
             child: firstName == ''
-                ? Text(user.email[0], style: TextStyle(fontSize: 100, fontWeight: FontWeight.bold),)
+                ? Text(user.email[0], style: const TextStyle(fontSize: 100, fontWeight: FontWeight.bold),)
                 : Image.network(user.photoURL, fit: BoxFit.fill,),
           ),
           const SizedBox(height: 50,),
           if(firstName != '') ...[
             ProfileTextWidget(text: user.displayName),
             const SizedBox(height: 20,),
-
           ],
           ProfileTextWidget(text: user.email),
         ],

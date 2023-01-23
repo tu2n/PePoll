@@ -36,10 +36,10 @@ class NavigationMiddleware extends MiddlewareClass<AppState> {
           debugPrint('Push Home Screen');
           break;
 
-        case Navigation.pushCreatePollScreen:
+        case Navigation.pushPollDetailScreen:
           unSubscriber.add(null);
-          navigatorKey.currentState.pushNamed("/create_poll");
-          debugPrint('Push Create Poll Screen');
+          navigatorKey.currentState.pushNamed("/poll_detail_screen");
+          debugPrint('Push Poll Detail Screen');
           break;
 
         default:

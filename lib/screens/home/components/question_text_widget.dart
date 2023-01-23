@@ -11,7 +11,7 @@ class QuestionTextWidget extends StatelessWidget {
       alignment: Alignment.centerLeft,
       child: Text(question,
         style: const TextStyle(
-            fontSize: 20,
+            fontSize: 24,
             fontWeight: FontWeight.bold,
             color: kWhite
         ),

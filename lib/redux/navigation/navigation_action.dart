@@ -2,7 +2,7 @@ enum Navigation {
   pushAuthWall,
   pushLoginOrRegister,
   pushHomeScreen,
-  pushCreatePollScreen
+  pushPollDetailScreen
 }
 
 class SaveCurrentNavigation {

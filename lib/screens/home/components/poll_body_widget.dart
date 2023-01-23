@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:pepoll/core/colors.dart';
 import 'package:pepoll/model/poll.dart';
 import 'package:pepoll/model/poll_choice.dart';
@@ -10,26 +11,21 @@ import 'package:redux/redux.dart';
 import 'package:pepoll/redux/app_state.dart';
 
 class PollBodyWidget extends StatelessWidget {
-  final FirebaseFirestore firestore;
-  final List<Poll> polls;
-  final int index;
-  final Store<AppState> store;
-  const PollBodyWidget({Key key,
-    @required this.firestore,
-    @required this.polls,
-    @required this.index,
-    @required this.store}) : super(key: key);
+  final Poll poll;
+  const PollBodyWidget({Key key, @required this.poll,}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final Store<AppState> _store = StoreProvider.of<AppState>(context);
+    final FirebaseFirestore _firestore = FirebaseFirestore.instance;
     return  StreamBuilder<QuerySnapshot>(
-        stream: firestore.collection('channels').doc(FIRST_CHANNEL_UID)
-            .collection('polls').doc(polls[index].uid).collection('choices').snapshots(),
+        stream: _firestore.collection('channels').doc(FIRST_CHANNEL_UID)
+            .collection('polls').doc(poll.uid).collection('choices').snapshots(),
         builder: (context, snapshot) {
           List<Widget> choicesWidgets = [];
           PollChoice pollChoice;
-          String pollDocID = polls[index].uid;
-          String expirationDate = polls[index].expiration;
+          String pollDocID = poll.uid;
+          String expirationDate = poll.expiration;
           List<String> voted = <String>[];
           if(snapshot.hasData) {
             final dbPollChoices = snapshot.data.docs;
@@ -45,7 +41,7 @@ class PollBodyWidget extends StatelessWidget {
               choicesWidgets.add(buildChoiceItem(
                   pollDocID,
                   pollChoice,
-                  store.state.localState.user.uid,
+                  _store.state.localState.user.uid,
                   expirationDate
                 )
               );

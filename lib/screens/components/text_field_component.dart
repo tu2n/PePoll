@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pepoll/core/colors.dart';
 
-import '../../../core/common_util.dart';
+import '../../core/common_util.dart';
 
 class TextFieldComponent extends StatelessWidget {
   final TextEditingController txtCtrl;

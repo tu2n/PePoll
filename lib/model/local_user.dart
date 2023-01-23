@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 class LocalUser {
   String displayName;
   String email;
@@ -8,10 +6,10 @@ class LocalUser {
   String uid;
 
   LocalUser({
-    @required this.displayName,
-    @required this.email,
-    @required this.phoneNumber,
-    @required this.photoURL,
-    @required this.uid
+    this.displayName = "",
+    this.email = "",
+    this.phoneNumber = "",
+    this.photoURL = "",
+    this.uid = ""
   });
 }
