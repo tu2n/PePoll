@@ -12,11 +12,11 @@ Widget buildChoiceItem(String pollDocId, PollChoice pollChoice, String userId, S
       await removeVote(pollDocId, pollChoice.uid, userId,);
     },
     child: Container(
-      margin: const EdgeInsets.only(bottom: 7),
-      height: 30,
+      margin: const EdgeInsets.only(top: 15),
+      height: 50,
       width: double.infinity,
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(3),
+          borderRadius: BorderRadius.circular(10),
           border: Border.all(
               color: pollChoice.voted.contains(userId) ? kLightMagenta : kMatteViolet
           )
@@ -24,26 +24,30 @@ Widget buildChoiceItem(String pollDocId, PollChoice pollChoice, String userId, S
       child: Row(
         children: [
           Padding(
-            padding: const EdgeInsets.all(4.0),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
             child: Align(
               alignment: Alignment.centerLeft,
               child: Text(
                 pollChoice.choice,
                 style: const TextStyle(
-                    color: Colors.white60
+                    color: Colors.white60,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold
                 ),
               ),
             ),
           ),
-          const Expanded(child: SizedBox()),
+          const Spacer(),
           Padding(
-            padding: const EdgeInsets.all(4.0),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
             child: Align(
               alignment: Alignment.centerRight,
               child: Text(
                 pollChoice.voted == null ? "0" : pollChoice.voted.length.toString(),
                 style: const TextStyle(
-                    color: Colors.white60
+                    color: Colors.white60,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold
                 ),
               ),
             ),

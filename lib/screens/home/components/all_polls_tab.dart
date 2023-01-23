@@ -32,7 +32,6 @@ class AllPollsTab extends StatelessWidget {
                     expiration: entry.data()['expiration'],
                     createdBy: entry.data()['createdBy'],
                     uid: entry.reference.id,
-
                   );
                   polls.add(poll);
                 }

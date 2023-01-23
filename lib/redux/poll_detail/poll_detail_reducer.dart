@@ -10,5 +10,9 @@ final pollDetailReducer = combineReducers<PollDetailState>([
 
 
 PollDetailState _selectPollToViewAction(PollDetailState state, SelectPollToViewAction action) {
-  return state.copyWith(pollId: action.pollId, user: action.user);
+  return state.copyWith(
+      pollId: action.pollId,
+      user: action.user,
+      createdByCurrentUser: action.createdByCurrentUser
+  );
 }

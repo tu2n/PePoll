@@ -32,7 +32,7 @@ class PollPreviewWidget extends StatelessWidget {
             );
             return GestureDetector(
               onTap: () {
-                _store.dispatch(SelectPollToViewAction(poll.uid, user));
+                _store.dispatch(SelectPollToViewAction(poll.uid, user, poll.createdBy == _store.state.localState.user.uid));
                 _store.dispatch(Navigation.pushPollDetailScreen);
               },
               child: Container(

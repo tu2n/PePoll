@@ -13,8 +13,6 @@ import 'package:redux/redux.dart';
 
 enum Day {Yesterday, Today, Tomorrow}
 
-/// THIS IS  WIDGET IS NO LONGER DISPLAY
-/// BUT STILL USE FOR UI REFERENCE
 class CreatePollTab extends StatefulWidget {
   const CreatePollTab({Key key}) : super(key: key);
 

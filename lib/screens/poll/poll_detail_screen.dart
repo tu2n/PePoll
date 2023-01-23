@@ -57,9 +57,52 @@ class PollDetailScreen extends StatelessWidget {
                       ),
                     ),
                     const Spacer(),
-                    const Icon(
-                      Icons.chevron_left,
-                      size: 30, color: Colors.transparent,
+                    Visibility(
+                      visible: _store.state.pollDetailState.createdByCurrentUser,
+                      child: InkWell(
+                        onTap: () {
+                          showCupertinoDialog(
+                              barrierDismissible: true,
+                              context: context,
+                              builder: (_) {
+                                return CupertinoAlertDialog(
+                                  title: const Text("Delete Poll"),
+                                  content: const Text("Are you sure you want to delete this poll?"),
+                                  actions: [
+                                    CupertinoDialogAction(
+                                      child: const Text("No"),
+                                      textStyle: const TextStyle(
+                                          color: kLightMagenta
+                                      ),
+                                      onPressed: () => Navigator.pop(_),
+                                    ),
+                                    CupertinoDialogAction(
+                                      child: const Text("Yes"),
+                                      textStyle: const TextStyle(
+                                          color: kMatteOrange
+                                      ),
+                                      onPressed: () async {
+                                        try {
+                                          await _store.dispatch(Navigation.pushHomeScreen);
+                                          Future.delayed(const Duration(milliseconds: 500), () async {
+                                            await deletePoll(_store.state.pollDetailState.pollId);
+                                          });
+                                        } catch (e) {
+                                          debugPrint(e);
+                                        }
+                                      },
+                                    ),
+                                  ],
+                                );
+                              }
+                          );
+                        },
+                        child: const Icon(
+                          Icons.delete,
+                          color: kWhite,
+                          size: 25,
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -73,12 +116,13 @@ class PollDetailScreen extends StatelessWidget {
                       builder: (context, snapshot) {
                         if(snapshot.hasData) {
                          Poll poll = Poll(
-                             question: snapshot.data.get('question'),
-                             expiration: snapshot.data.get('expiration'),
-                             createdBy: snapshot.data.get('createdBy')
+                           question: snapshot.data.get('question'),
+                           expiration: snapshot.data.get('expiration'),
+                           createdBy: snapshot.data.get('createdBy'),
+                           uid: snapshot.data.id
                          );
                          return Padding(
-                           padding: const EdgeInsets.all(20),
+                           padding: const EdgeInsets.all(10),
                            child: Column(
                              children: [
                                Container(
@@ -114,7 +158,7 @@ class PollDetailScreen extends StatelessWidget {
                                                          style: const TextStyle(
                                                              color: kWhite,
                                                              fontWeight: FontWeight.bold,
-                                                             fontSize: 16
+                                                             fontSize: 20
                                                          )
                                                      )
                                                  ),
@@ -125,7 +169,7 @@ class PollDetailScreen extends StatelessWidget {
                                                          'Expiration: ${Poll.formatExpDateToString(DateTime.parse(poll.expiration))}',
                                                          style: const TextStyle(
                                                              color: Colors.white60,
-                                                             fontSize: 10
+                                                             fontSize: 16
                                                          )
                                                      )
                                                  ),
@@ -139,7 +183,7 @@ class PollDetailScreen extends StatelessWidget {
                                      Text(
                                        poll.question,
                                        style: const TextStyle(
-                                           fontSize: 30,
+                                           fontSize: 28,
                                            fontWeight: FontWeight.bold,
                                            color: kWhite
                                        ),
@@ -155,7 +199,6 @@ class PollDetailScreen extends StatelessWidget {
                                            String expirationDate = poll.expiration;
                                            List<String> voted = <String>[];
                                            if(snapshot.hasData) {
-                                             print("yyyyyyy");
                                              final dbPollChoices = snapshot.data.docs;
                                              for(var entry in dbPollChoices) {
                                                for(var voter in entry.data()['voted']) {
@@ -176,15 +219,14 @@ class PollDetailScreen extends StatelessWidget {
                                                voted = [];
                                              }
                                              return Column(
-                                               children: [
-                                                 Text("asdaddadad")
-                                               ]
+                                               children: choicesWidgets
                                              );
                                            } else {
                                              return const Center(child: CircularProgressIndicator(color: kLightMagenta));
                                            }
                                          }
-                                     )
+                                     ),
+                                     const SizedBox(height: 10,),
                                    ],
                                  ),
                                ),
