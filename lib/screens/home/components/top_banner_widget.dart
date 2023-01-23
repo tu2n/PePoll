@@ -13,7 +13,7 @@ class TopBannerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Store<AppState> store = StoreProvider.of<AppState>(context);
+    Store<AppState> _store = StoreProvider.of<AppState>(context);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 15),
       child: Row(
@@ -31,6 +31,7 @@ class TopBannerWidget extends StatelessWidget {
             onPressed: () async {
               try{
                 await Auth().signOut();
+                _store.dispatch(Navigation.pushAuthWall);
               } catch (e) {
                 debugPrint(e.toString());
               }
